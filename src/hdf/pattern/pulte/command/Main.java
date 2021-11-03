@@ -30,17 +30,43 @@ public class Main {
         final StereoOnCDCommand stereoOnCDCommand = new StereoOnCDCommand(stereo);
         final StereoOffCommand stereoOffCommand = new StereoOffCommand(stereo);
 
+        final GarageDoor garageDoor = new GarageDoor();
+        final GarageDoorOpenCommand garageDoorOpenCommand = new GarageDoorOpenCommand(garageDoor);
+        final GarageDoorCloseCommand garageDoorCloseCommand = new GarageDoorCloseCommand(garageDoor);
+
+        final PartyOnCommand partyOnCommand = new PartyOnCommand(
+                new Command[]{lightOn, stereoOnCDCommand, garageDoorCloseCommand});
+        final PartyOffCommand partyOffCommand = new PartyOffCommand(
+                new Command[]{lightOffCommand, stereoOffCommand, garageDoorOpenCommand});
+
         RemoteController remoteController = new RemoteController();
 
         remoteController.setCommand(1, lightOn, lightOffCommand);
         remoteController.setCommand(2, stereoOnCDCommand, stereoOffCommand);
+        remoteController.setCommand(0, partyOnCommand, partyOffCommand);
 
         System.out.println(remoteController);
 
         remoteController.onButtonWasPressed(1);
         remoteController.offButtonWaPressed(1);
+        remoteController.onButtonWasPressed(2);
+        remoteController.offButtonWaPressed(2);
 
         remoteController.undo();
+
+        remoteController.cancel();
+
+        System.out.println();
+        System.out.println();
+        System.out.println("TIME TO PARTYYYYYY!y!yy!!yy!y!!y!y!y!y!y");
+        remoteController.onButtonWasPressed(0);
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException ignored) {
+            // not like exceptions!
+        }
+        System.out.println("PARTY IS OF!!!!!!😿");
+        remoteController.offButtonWaPressed(0);
     }
 
     public static class SimpleCafe {

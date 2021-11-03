@@ -1,9 +1,16 @@
 package hdf.pattern.pulte.command;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 public class RemoteController {
     private Command[] onCommands;
     private Command[] offCommands;
     private Command undoCommand;
+
+    // здесь будет хранится история нажатия на клавиши
+    // таким образом можно отменить нажатые операции
+    private Deque<Command> history = new ArrayDeque<>(15); // у нас есть всего 14 комманд
 
     public RemoteController() {
         onCommands = new Command[7];
@@ -25,16 +32,27 @@ public class RemoteController {
     public void onButtonWasPressed(int slot) {
         onCommands[slot].execute();
         undoCommand = onCommands[slot];
+        history.push(onCommands[slot]);
     }
 
     public void offButtonWaPressed(int slot) {
         offCommands[slot].execute();
         undoCommand = offCommands[slot];
+        history.push(offCommands[slot]);
     }
 
     public void undo() {
         System.out.println("Execute undo command");
         undoCommand.undo();
+        history.pop(); // удаляем операцию при нажатии назад
+    }
+
+    public void cancel() {
+        System.out.println("Execute cancel");
+        // пока в истории есть команды, которые нужно откатить, то выполянем у нихъ undo
+        while (!history.isEmpty()) {
+            history.pop().undo();
+        }
     }
 
     @Override
