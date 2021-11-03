@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 
 public class Main {
     public static void main(String[] args) {
+//<editor-fold defaultstate="collapsed" desc="Code with simpleRemoteController" >
+
 //        final SimpleRemoteController remoteController = new SimpleRemoteController();
 //        final Light light = new Light();
 //        final LightOnCommand lightOn = new LightOnCommand(light);
@@ -17,6 +19,7 @@ public class Main {
 //
 //        remoteController.setCommand(garageDoorOpen);
 //        remoteController.buttonWasPressed();
+//</editor-fold>
 
 
         final Light light = new Light();
@@ -36,6 +39,8 @@ public class Main {
 
         remoteController.onButtonWasPressed(1);
         remoteController.offButtonWaPressed(1);
+
+        remoteController.undo();
     }
 
     public static class SimpleCafe {
